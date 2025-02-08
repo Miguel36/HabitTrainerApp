@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        tools:context=".CreateHabitActivity">
+
+        <EditText
+            android:id="@+id/input_title_habit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/eat_an_apple" />
+
+        <EditText
+            android:id="@+id/input_desc_habit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/apple_desc"
+            android:inputType="textMultiLine"
+            android:lines="2" />
+
+        <Button
+            android:id="@+id/btn_choose_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_image" />
+
+        <ImageView
+            android:id="@+id/preview_image"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/selected_image"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_save_habit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/txt_input_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_error"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+
