@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         with(binding.recyclerviewHabits) {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(applicationContext)
-            adapter = HabitsAdapter(getSimpleHabits())
+            //adapter = HabitsAdapter(getSimpleHabits())
 
         }
     }
