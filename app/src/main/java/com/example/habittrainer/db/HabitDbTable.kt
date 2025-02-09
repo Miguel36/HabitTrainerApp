@@ -2,6 +2,7 @@ package com.example.habittrainer.db
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.util.Log
 import com.example.habittrainer.Habit
@@ -20,11 +21,11 @@ class HabitDbTable(context: Context) {
         values.put(HabitEntry.DESCR_COL, habit.description)
         values.put(HabitEntry.IMAGE_COL, toByteArray(habit.image))
 
-        val id = db.insert(HabitEntry.TABLE_NAME, null, values)
+        db.transaction {
+            db.insert(HabitEntry.TABLE_NAME, null, values)
+        }
 
-        db.close()
         Log.d(TAG, "Stored new habit to the DB $habit")
-
         return id
     }
 
@@ -33,4 +34,16 @@ class HabitDbTable(context: Context) {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream)
         return stream.toByteArray()
     }
+}
+
+private fun SQLiteDatabase.transaction(function: SQLiteDatabase.() -> Unit) {
+    beginTransaction()
+    try {
+        function()
+        setTransactionSuccessful()
+    }
+    finally {
+        endTransaction()
+    }
+    close()
 }

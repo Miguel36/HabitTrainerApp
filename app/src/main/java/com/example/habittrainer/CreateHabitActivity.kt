@@ -3,7 +3,6 @@ package com.example.habittrainer
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.habittrainer.databinding.ActivityCreateHabitBinding
-
 
 
 class CreateHabitActivity : AppCompatActivity() {
