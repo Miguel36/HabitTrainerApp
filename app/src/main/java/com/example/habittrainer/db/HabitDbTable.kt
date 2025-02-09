@@ -21,7 +21,8 @@ class HabitDbTable(context: Context) {
         values.put(HabitEntry.DESCR_COL, habit.description)
         values.put(HabitEntry.IMAGE_COL, toByteArray(habit.image))
 
-        db.transaction {
+        // The type is Long because insert operation is a function that return long
+        val id: Long = db.transaction {
             db.insert(HabitEntry.TABLE_NAME, null, values)
         }
 
@@ -36,14 +37,18 @@ class HabitDbTable(context: Context) {
     }
 }
 
-private fun SQLiteDatabase.transaction(function: SQLiteDatabase.() -> Unit) {
+private inline fun <T> SQLiteDatabase.transaction(function: SQLiteDatabase.() -> T): T {
     beginTransaction()
-    try {
-        function()
+    val result = try {
+        val functionResult = function()
         setTransactionSuccessful()
+
+        functionResult
     }
     finally {
         endTransaction()
     }
     close()
+
+    return result
 }
