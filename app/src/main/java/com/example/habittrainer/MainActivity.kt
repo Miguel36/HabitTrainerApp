@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.habittrainer.databinding.ActivityMainBinding
+import com.example.habittrainer.db.HabitDbTable
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         with(binding.recyclerviewHabits) {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(applicationContext)
-            //adapter = HabitsAdapter(getSimpleHabits())
+            adapter = HabitsAdapter(HabitDbTable(applicationContext).readAllHabits())
 
         }
     }

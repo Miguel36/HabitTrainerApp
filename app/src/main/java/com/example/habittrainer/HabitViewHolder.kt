@@ -12,7 +12,7 @@ class HabitViewHolder(card: View) : RecyclerView.ViewHolder(card) {
     val imgHabit: ImageView = itemView.findViewById(R.id.img_icon)
 
     fun bind(item: Habit) {
-        imgHabit.setImageResource(item.image)
+        imgHabit.setImageBitmap(item.image)
         txtTitle.text = item.title
         txtDescription.text = item.description
     }
