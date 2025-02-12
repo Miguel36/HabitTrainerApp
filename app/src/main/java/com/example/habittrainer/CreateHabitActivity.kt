@@ -1,9 +1,10 @@
 package com.example.habittrainer
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -13,19 +14,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.habittrainer.databinding.ActivityCreateHabitBinding
-
+import com.example.habittrainer.db.HabitDbTable
+import java.io.FileNotFoundException
 
 
 class CreateHabitActivity : AppCompatActivity() {
 
     private val TAG = CreateHabitActivity::class.simpleName
-    private var selectedImageUri: Uri? = null
+    private var selectedImageBitmap: Bitmap? = null
 
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK && result.data != null) {
-            selectedImageUri = result.data?.data
+            val selectedImageUri = result.data?.data
             selectedImageUri.let {
-                binding.previewImage.setImageURI(it)
+                selectedImageBitmap = getBitmapFromUri(it!!)
+                binding.previewImage.setImageBitmap(selectedImageBitmap)
             }
         }
     }
@@ -71,14 +74,25 @@ class CreateHabitActivity : AppCompatActivity() {
             displayErrorMessage("Your habit needs an engaging title and description.")
             return
         }
-        else if (selectedImageUri == null) {
+        else if (selectedImageBitmap == null) {
             Log.d(TAG, "No habit stored: image missing.")
             displayErrorMessage("Add a motivating picture to your habit.")
             return
         }
 
         // Store the habit
-        binding.txtInputError.visibility = View.GONE
+        val title = binding.inputTitleHabit.text.toString()
+        val description = binding.inputDescHabit.text.toString()
+        val habit = Habit(title, description, selectedImageBitmap!!)
+
+        val id = HabitDbTable(applicationContext).store(habit)
+        if (id == -1L) {
+            displayErrorMessage("Habit could not be stored...let's not make this a habit")
+        }
+        else {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun displayErrorMessage(message: String) {
@@ -91,6 +105,16 @@ class CreateHabitActivity : AppCompatActivity() {
         _binding = null
     }
 
+    // Función para convertir Uri a Bitmap
+    private fun getBitmapFromUri(uri: Uri): Bitmap? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            null
+        }
+    }
 }
 
 // We create the extension function for simplify and make more readable our code,
